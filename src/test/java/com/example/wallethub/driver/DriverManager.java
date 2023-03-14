@@ -4,11 +4,6 @@ import org.openqa.selenium.WebDriver;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
-/**
- * This class provides a singleton instance of WebDriver.
- *
- * @author tahanima
- */
 public final class DriverManager {
     private static WebDriver driver = null;
 
@@ -23,7 +18,6 @@ public final class DriverManager {
                     BrowserFactory.valueOf(configuration().browser().toUpperCase())
                             .initializeDriver();
         }
-
         return driver;
     }
 }

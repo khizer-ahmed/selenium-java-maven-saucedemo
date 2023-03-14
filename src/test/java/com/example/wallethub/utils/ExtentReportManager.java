@@ -8,9 +8,6 @@ import java.util.Date;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
-/**
- * @author tahanima
- */
 public final class ExtentReportManager {
     private ExtentReportManager() {}
 

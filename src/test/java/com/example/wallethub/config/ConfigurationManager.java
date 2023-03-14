@@ -2,11 +2,6 @@ package com.example.wallethub.config;
 
 import org.aeonbits.owner.ConfigCache;
 
-/**
- * This class provides a singleton instance of the Configuration class.
- *
- * @author tahanima
- */
 public final class ConfigurationManager {
     private ConfigurationManager() {}
 

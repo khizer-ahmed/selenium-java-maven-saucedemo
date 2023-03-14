@@ -7,40 +7,38 @@ import org.openqa.selenium.support.FindBy;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
-public final class LoginPage extends BasePage {
-    @FindBy(id = "user-name")
+public final class LoginNewPage extends BasePage {
+    @FindBy(id = "email")
     private WebElement txtUsername;
 
     @FindBy(id = "password")
     private WebElement txtPassword;
 
-    @FindBy(id = "login-button")
+    @FindBy(xpath = "//button//*[text()='Login']/ancestor::button")
     private WebElement btnLogin;
 
-    public LoginPage goTo() {
+    public LoginNewPage goTo() {
         getDriver().get(configuration().baseUrl());
-
         return this;
     }
 
-    public LoginPage enterUsername(final String username) {
+    public LoginNewPage enterUsername(final String username) {
         txtUsername.clear();
         txtUsername.sendKeys(username);
 
         return this;
     }
 
-    public LoginPage enterPassword(final String password) {
+    public LoginNewPage enterPassword(final String password) {
         txtPassword.clear();
         txtPassword.sendKeys(password);
 
         return this;
     }
 
-    public String getErrorMessage() {
+    public String getName() {
         return getDriver()
-                .findElement(By.className("error-message-container"))
-                .findElement(By.tagName("h3"))
+                .findElement(By.xpath("//span[text()='Syed Khizer']"))
                 .getText();
     }
 

@@ -10,11 +10,6 @@ import org.testng.ITestResult;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
-/**
- * This class takes care of test report generation.
- *
- * @author tahanima
- */
 public final class TestListener implements ITestListener {
     private static final ExtentReports REPORT = ExtentReportManager.createReport();
 

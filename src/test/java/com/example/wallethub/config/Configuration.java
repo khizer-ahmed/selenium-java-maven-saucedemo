@@ -2,12 +2,7 @@ package com.example.wallethub.config;
 
 import org.aeonbits.owner.Config;
 
-/**
- * This interface loads the global parameters contained within config.properties file and from
- * system properties.
- *
- * @author tahanima
- */
+
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({"system:properties", "classpath:config.properties"})
 public interface Configuration extends Config {
