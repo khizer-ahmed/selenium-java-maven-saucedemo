@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
 public final class LoginNewPage extends BasePage {
+    private String url = configuration().baseUrl() + "/join/login";
     @FindBy(id = "email")
     private WebElement txtUsername;
 
@@ -18,7 +19,7 @@ public final class LoginNewPage extends BasePage {
     private WebElement btnLogin;
 
     public LoginNewPage goTo() {
-        getDriver().get(configuration().baseUrl());
+        getDriver().get(url);
         return this;
     }
 
@@ -43,6 +44,6 @@ public final class LoginNewPage extends BasePage {
     }
 
     public void clickLogin() {
-        btnLogin.click();
+        click(btnLogin);
     }
 }

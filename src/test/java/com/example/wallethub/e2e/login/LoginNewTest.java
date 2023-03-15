@@ -2,6 +2,7 @@ package com.example.wallethub.e2e.login;
 
 import com.example.wallethub.e2e.BaseE2ETest;
 import com.example.wallethub.pages.login.LoginNewPage;
+import com.example.wallethub.pages.profile.ProfileTICPage;
 import com.example.wallethub.data.login.LoginNewData;
 
 import org.testng.ITestNGMethod;
@@ -18,7 +19,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class LoginNewTest extends BaseE2ETest {
     private static final String FILE_PATH = "login/loginNew.csv";
     private LoginNewPage loginPage;
-
+    private ProfileTICPage profileTICPage;
+    
     @DataProvider(name = "LoginNewData")
     public static Object[][] getLoginData(final Method testMethod) {
         String testCaseId = testMethod.getAnnotation(Test.class).testName();
@@ -29,6 +31,7 @@ public class LoginNewTest extends BaseE2ETest {
     @Override
     public void initialize() {
         loginPage = createInstance(LoginNewPage.class);
+        profileTICPage = createInstance(ProfileTICPage.class);
     }
 
     @AfterMethod
@@ -44,13 +47,20 @@ public class LoginNewTest extends BaseE2ETest {
             testName = "TC-1",
             dataProvider = "LoginNewData",
             groups = {"smoke", "regression"})
-    public void testCorrectUserNameAndCorrectPassword(final LoginNewData loginDto) {
+    public void testCorrectUserNameAndCorrectPassword(final LoginNewData loginDto) throws InterruptedException{
         loginPage
                 .goTo()
                 .enterUsername(loginDto.getUserName())
                 .enterPassword(loginDto.getPassword())
                 .clickLogin();
-        
-        assertThat(loginPage.getName()).isEqualTo(loginDto.getGetUserName());        
+
+        assertThat(loginPage.getName()).isEqualTo(loginDto.getGetUserName());   
+        profileTICPage
+                   .goTo() 
+                   .hoverAndClickFourthStar()
+                   .selectHealthInsurancePolicy()
+                   .enterReview()
+                   .submitReview();
+        Thread.sleep(10000);
    }
 }
