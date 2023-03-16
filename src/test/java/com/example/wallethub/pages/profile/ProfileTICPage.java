@@ -1,7 +1,6 @@
 package com.example.wallethub.pages.profile;
 import com.example.wallethub.pages.BasePage;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
@@ -9,6 +8,12 @@ import static com.example.wallethub.config.ConfigurationManager.configuration;
 
 public final class ProfileTICPage extends BasePage {
     
+    private String writeReview =  WriteRandomReview();
+    private String profileName = "Test Insurance Company";
+    private String reviewConfirmTitle = "WalletHub - Review Confirmation";
+    private String expectedReviewMessage = "Awesome!Your review has been posted.";
+    //div[@class='rvc-body-middle']//p
+
     private String url = configuration().baseUrl() + "/profile/13732055i";
 
     @FindBy(xpath = "//div[@class='rv review-action ng-enter-element']")
@@ -35,9 +40,19 @@ public final class ProfileTICPage extends BasePage {
     @FindBy(xpath = "//textarea[@placeholder='Write your review...']")
     private WebElement writeReviewField;
 
-    @FindBy(xpath = " //div[text()=' Submit ']")
+    @FindBy(xpath = "//div[text()=' Submit ']")
     private WebElement submitReviewButton;
    
+    @FindBy(xpath = "//div[@class='rvc-header']//h2")
+    private WebElement reviewMessageOne;
+
+    @FindBy(xpath = "//div[@class='rvc-header']//h4")
+    private WebElement reviewMessageTwo;
+
+    @FindBy(xpath = "//div[@class='rvc-body-middle']//p")
+    private WebElement review;
+    
+    
     public ProfileTICPage goTo() {
         getDriver().get(url);
         return this;
@@ -65,8 +80,7 @@ public final class ProfileTICPage extends BasePage {
     public ProfileTICPage enterReview() throws InterruptedException {
         addWait();
         writeReviewField.clear();
-        String review =  "Test Review : " +  WriteRandomReview();
-        writeReviewField.sendKeys(review);
+        writeReviewField.sendKeys(writeReview);
         addWait();
         return this;
     }
@@ -74,9 +88,33 @@ public final class ProfileTICPage extends BasePage {
     public ProfileTICPage submitReview() throws InterruptedException {
         addWait();
         click(submitReviewButton);
-        addWait();
+        waitUntilTitle(reviewConfirmTitle);
         return this;
     }
 
+    public String getActualReviewMessage() {
+        return getText(reviewMessageOne) + getText(reviewMessageTwo);
+    }
+
+    public String getExpectedReviewMessage() {
+        return expectedReviewMessage;
+    }
+
+    public String getActualReview() {
+        return getText(review);
+    }
+
+    public String getExpectedReview() {
+        return writeReview;
+    }
+
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public ProfileTICPage findReview(String reviewId){
+        WebElement reviewArticle = elementVisible(reviewId);
+        return this;
+    }
     
 }

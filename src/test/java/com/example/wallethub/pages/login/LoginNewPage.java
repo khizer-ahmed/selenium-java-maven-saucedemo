@@ -26,14 +26,12 @@ public final class LoginNewPage extends BasePage {
     public LoginNewPage enterUsername(final String username) {
         txtUsername.clear();
         txtUsername.sendKeys(username);
-
         return this;
     }
 
     public LoginNewPage enterPassword(final String password) {
         txtPassword.clear();
         txtPassword.sendKeys(password);
-
         return this;
     }
 

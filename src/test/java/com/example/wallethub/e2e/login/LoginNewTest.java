@@ -2,6 +2,7 @@ package com.example.wallethub.e2e.login;
 
 import com.example.wallethub.e2e.BaseE2ETest;
 import com.example.wallethub.pages.login.LoginNewPage;
+import com.example.wallethub.pages.profile.MyProfilePage;
 import com.example.wallethub.pages.profile.ProfileTICPage;
 import com.example.wallethub.data.login.LoginNewData;
 
@@ -20,6 +21,7 @@ public class LoginNewTest extends BaseE2ETest {
     private static final String FILE_PATH = "login/loginNew.csv";
     private LoginNewPage loginPage;
     private ProfileTICPage profileTICPage;
+    private MyProfilePage myProfile;
     
     @DataProvider(name = "LoginNewData")
     public static Object[][] getLoginData(final Method testMethod) {
@@ -32,6 +34,7 @@ public class LoginNewTest extends BaseE2ETest {
     public void initialize() {
         loginPage = createInstance(LoginNewPage.class);
         profileTICPage = createInstance(ProfileTICPage.class);
+        myProfile = createInstance(MyProfilePage.class);
     }
 
     @AfterMethod
@@ -61,6 +64,16 @@ public class LoginNewTest extends BaseE2ETest {
                    .selectHealthInsurancePolicy()
                    .enterReview()
                    .submitReview();
-        Thread.sleep(10000);
-   }
+
+        assertThat(profileTICPage.getActualReviewMessage()).isEqualTo(profileTICPage.getExpectedReviewMessage());   
+        assertThat(profileTICPage.getActualReview()).isEqualTo(profileTICPage.getExpectedReview());  
+
+        myProfile.goTo();
+
+        assertThat(profileTICPage.getProfileName()).isEqualTo(myProfile.getReviewFeedCompany());
+        
+        String reviewId = myProfile.getReviewId();
+        myProfile.goToReviewProfile(); 
+        profileTICPage.findReview(reviewId);
+    }
 }

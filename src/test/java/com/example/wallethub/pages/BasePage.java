@@ -58,8 +58,29 @@ public class BasePage {
         }
     }
 
+    public void waitUntilTitle(String title) {
+        WebDriverWait wait  = initializeWait();
+        wait.until(ExpectedConditions.titleIs(title));
+    }
+
     public void click(WebElement element){
         waitUntilpresent(element).click();
+    }
+
+    public String getText(WebElement element){
+        WebDriverWait wait  = initializeWait();
+        return wait.until(ExpectedConditions.visibilityOf(element)).getText();
+    }
+
+    public WebElement elementVisible(String locator){
+        WebDriverWait wait  = initializeWait();
+        By elementLocator = By.xpath(locator);
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+    }
+
+    public String getAttributeValue(WebElement element, String attribute){
+        WebDriverWait wait  = initializeWait();
+        return wait.until(ExpectedConditions.visibilityOf(element)).getAttribute(attribute);
     }
 
     public void scrollToElement(WebElement element){
