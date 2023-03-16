@@ -7,6 +7,8 @@ import com.example.wallethub.pages.BasePage;
 
 public class MyProfilePage extends BasePage {
     
+    private String reviewAuthorName = "Your Review";
+
     @FindBy(xpath = "//span[text()='Syed Khizer']//parent::div")
     private WebElement profileList;
 
@@ -42,5 +44,13 @@ public class MyProfilePage extends BasePage {
         reviewId = reviewIds[1];
         addWait();
         return reviewId;
+    }
+
+    public String getReviewAuthorName() {
+        return reviewAuthorName;
+    }
+
+    public String getReviewNickName() {
+        return "@khizerahmed5116SSS";
     }
 }

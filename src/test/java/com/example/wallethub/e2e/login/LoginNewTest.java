@@ -5,7 +5,7 @@ import com.example.wallethub.pages.login.LoginNewPage;
 import com.example.wallethub.pages.profile.MyProfilePage;
 import com.example.wallethub.pages.profile.ProfileTICPage;
 import com.example.wallethub.data.login.LoginNewData;
-
+import static com.example.wallethub.config.ConfigurationManager.configuration;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -46,18 +46,14 @@ public class LoginNewTest extends BaseE2ETest {
         }
     }
 
-    @Test(
-            testName = "TC-1",
-            dataProvider = "LoginNewData",
-            groups = {"smoke", "regression"})
-    public void testCorrectUserNameAndCorrectPassword(final LoginNewData loginDto) throws InterruptedException{
+    @Test(testName = "TC-1")
+    public void testCorrectUserNameAndCorrectPassword() throws InterruptedException{
         loginPage
                 .goTo()
-                .enterUsername(loginDto.getUserName())
-                .enterPassword(loginDto.getPassword())
+                .enterUsername(configuration().email())
+                .enterPassword(configuration().password())
                 .clickLogin();
-
-        assertThat(loginPage.getName()).isEqualTo(loginDto.getGetUserName());   
+        assertThat(loginPage.getNaame()).isEqualTo(configuration().name());   
         profileTICPage
                    .goTo() 
                    .hoverAndClickFourthStar()
@@ -65,8 +61,8 @@ public class LoginNewTest extends BaseE2ETest {
                    .enterReview()
                    .submitReview();
 
-        assertThat(profileTICPage.getActualReviewMessage()).isEqualTo(profileTICPage.getExpectedReviewMessage());   
-        assertThat(profileTICPage.getActualReview()).isEqualTo(profileTICPage.getExpectedReview());  
+        assertThat(profileTICPage.getConfirmReviewMessage()).isEqualTo(profileTICPage.getExpectedConfirmReviewMessage());   
+        assertThat(profileTICPage.getConfirmPageReview()).isEqualTo(profileTICPage.getExpectedReview());  
 
         myProfile.goTo();
 
@@ -75,5 +71,10 @@ public class LoginNewTest extends BaseE2ETest {
         String reviewId = myProfile.getReviewId();
         myProfile.goToReviewProfile(); 
         profileTICPage.findReview(reviewId);
+        
+        assertThat(profileTICPage.reviewAuthor()).isEqualTo(myProfile.getReviewAuthorName());
+        assertThat(profileTICPage.reviewAuthorNick()).isEqualTo(myProfile.getReviewAuthorName());
+        assertThat(profileTICPage.reviewRating()).isEqualTo(profileTICPage.fourStarRating());
+        assertThat(profileTICPage.reviewMessage()).isEqualTo(profileTICPage.getExpectedReview());
     }
 }

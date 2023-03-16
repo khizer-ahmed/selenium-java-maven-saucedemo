@@ -78,6 +78,11 @@ public class BasePage {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
     }
 
+    public WebElement waitElementVisible(WebElement element){
+        WebDriverWait wait  = initializeWait();
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
     public String getAttributeValue(WebElement element, String attribute){
         WebDriverWait wait  = initializeWait();
         return wait.until(ExpectedConditions.visibilityOf(element)).getAttribute(attribute);

@@ -9,6 +9,10 @@ import static com.example.wallethub.config.ConfigurationManager.configuration;
 
 public final class LoginNewPage extends BasePage {
     private String url = configuration().baseUrl() + "/join/login";
+
+    private String profileName = configuration().name();
+    private String profileNameXpath = "//span[text()='"+profileName+"']";
+    
     @FindBy(id = "email")
     private WebElement txtUsername;
 
@@ -39,6 +43,10 @@ public final class LoginNewPage extends BasePage {
         return getDriver()
                 .findElement(By.xpath("//span[text()='Syed Khizer']"))
                 .getText();
+    }
+
+    public String getNaame() {
+        return getText(elementVisible(profileNameXpath));  
     }
 
     public void clickLogin() {

@@ -1,5 +1,7 @@
 package com.example.wallethub.pages.profile;
 import com.example.wallethub.pages.BasePage;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -11,8 +13,14 @@ public final class ProfileTICPage extends BasePage {
     private String writeReview =  WriteRandomReview();
     private String profileName = "Test Insurance Company";
     private String reviewConfirmTitle = "WalletHub - Review Confirmation";
-    private String expectedReviewMessage = "Awesome!Your review has been posted.";
-    //div[@class='rvc-body-middle']//p
+    private String expectedConfirmReviewMessage = "Awesome!Your review has been posted.";
+    private String fourStarRating = "4 Star Rating";
+    private static WebElement reviewAuthor;
+    private static WebElement reviewArticle;
+    private static WebElement reviewAuthorNick;
+    private static String reviewXpath;
+    private static WebElement reviewRating;
+    private static WebElement reviewMessage;
 
     private String url = configuration().baseUrl() + "/profile/13732055i";
 
@@ -50,9 +58,14 @@ public final class ProfileTICPage extends BasePage {
     private WebElement reviewMessageTwo;
 
     @FindBy(xpath = "//div[@class='rvc-body-middle']//p")
-    private WebElement review;
-    
-    
+    private WebElement confirmPageReview;
+
+    private By reviewAuthorLocator  = By.xpath("//span[@itemprop='author']");
+    private By reviewAuthorNickLocator  = By.xpath("//span[@itemprop='author']//following-sibling::span");
+    private By reviewRatingLocator  = By.xpath("//div[@class='a11y-hidden-label']");
+    private By reviewMessageLocator  = By.xpath("//div[@itemprop='description']");
+  
+   
     public ProfileTICPage goTo() {
         getDriver().get(url);
         return this;
@@ -92,16 +105,16 @@ public final class ProfileTICPage extends BasePage {
         return this;
     }
 
-    public String getActualReviewMessage() {
+    public String getConfirmReviewMessage() {
         return getText(reviewMessageOne) + getText(reviewMessageTwo);
     }
 
-    public String getExpectedReviewMessage() {
-        return expectedReviewMessage;
+    public String getExpectedConfirmReviewMessage() {
+        return expectedConfirmReviewMessage;
     }
-
-    public String getActualReview() {
-        return getText(review);
+    
+    public String getConfirmPageReview() {
+        return getText(confirmPageReview);
     }
 
     public String getExpectedReview() {
@@ -112,9 +125,33 @@ public final class ProfileTICPage extends BasePage {
         return profileName;
     }
 
-    public ProfileTICPage findReview(String reviewId){
-        WebElement reviewArticle = elementVisible(reviewId);
-        return this;
+    public String reviewAuthor(){
+        return getText(reviewAuthor);
+    }
+
+    public String reviewAuthorNick(){
+        return getText(reviewAuthorNick);
+    }
+
+    public String reviewRating(){
+        return getText(reviewRating);
+    }
+
+    public String reviewMessage(){
+        return getText(reviewMessage);
+    }
+
+    public String fourStarRating(){
+        return fourStarRating;
     }
     
+    public ProfileTICPage findReview(String reviewId){
+        reviewXpath = "//article[@data-rvid='"+reviewId+"']";
+        reviewArticle= elementVisible(reviewXpath);
+        reviewAuthor = waitElementVisible(reviewArticle.findElement(reviewAuthorLocator));
+        reviewAuthorNick = waitElementVisible(reviewArticle.findElement(reviewAuthorNickLocator));
+        reviewRating = waitElementVisible(reviewArticle.findElement(reviewRatingLocator));
+        reviewMessage = waitElementVisible(reviewArticle.findElement(reviewMessageLocator));
+        return this;
+    }
 }
