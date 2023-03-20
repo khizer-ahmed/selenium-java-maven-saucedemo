@@ -1,5 +1,4 @@
 package com.example.wallethub.config;
-
 import org.aeonbits.owner.Config;
 
 

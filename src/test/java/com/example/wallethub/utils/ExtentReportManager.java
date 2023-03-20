@@ -25,6 +25,10 @@ public final class ExtentReportManager {
         extentReport.setSystemInfo("Version", System.getProperty("os.version"));
         extentReport.setSystemInfo("Browser", configuration().browser());
         extentReport.setSystemInfo("Base URL", configuration().baseUrl());
+        extentReport.setSystemInfo("Test Data Username", configuration().username());
+        extentReport.setSystemInfo("Test Data Email ID", configuration().email());
+        extentReport.setSystemInfo("Test Data Password", configuration().password());
+        extentReport.setSystemInfo("Test Data Full Name", configuration().name());
 
         return extentReport;
     }

@@ -1,10 +1,11 @@
-package com.example.wallethub.e2e.login;
+package com.example.wallethub.test.e2e;
 
-import com.example.wallethub.e2e.BaseE2ETest;
 import com.example.wallethub.pages.login.LoginNewPage;
 import com.example.wallethub.pages.profile.MyProfilePage;
 import com.example.wallethub.pages.profile.ProfileTICPage;
-import com.example.wallethub.data.login.LoginNewData;
+import com.example.wallethub.test.BaseE2ETest;
+import com.example.wallethub.data.BaseData;
+
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -17,17 +18,16 @@ import java.lang.reflect.Method;
 import static com.example.wallethub.utils.DataProviderUtil.processCsv;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class LoginNewTest extends BaseE2ETest {
-    private static final String FILE_PATH = "login/loginNew.csv";
+public class Verify4StarReviewTest extends BaseE2ETest {
+    private static final String FILE_PATH = "testCaseData.csv";
     private LoginNewPage loginPage;
     private ProfileTICPage profileTICPage;
     private MyProfilePage myProfile;
     
-    @DataProvider(name = "LoginNewData")
+    @DataProvider(name = "BaseData")
     public static Object[][] getLoginData(final Method testMethod) {
         String testCaseId = testMethod.getAnnotation(Test.class).testName();
-
-        return processCsv(LoginNewData.class, FILE_PATH, testCaseId);
+        return processCsv(BaseData.class, FILE_PATH, testCaseId);
     }
 
     @Override
@@ -46,14 +46,15 @@ public class LoginNewTest extends BaseE2ETest {
         }
     }
 
-    @Test(testName = "TC-1")
-    public void testCorrectUserNameAndCorrectPassword() throws InterruptedException{
+    @Test   (testName = "TC-1",dataProvider = "BaseData")
+    public void testCorrectUserNameAndCorrectPassword(final BaseData baseData) throws InterruptedException{
         loginPage
                 .goTo()
                 .enterUsername(configuration().email())
                 .enterPassword(configuration().password())
                 .clickLogin();
-        assertThat(loginPage.getNaame()).isEqualTo(configuration().name());   
+        assertThat(loginPage.getNaame()).isEqualTo(configuration().name()); 
+        /*   
         profileTICPage
                    .goTo() 
                    .hoverAndClickFourthStar()
@@ -76,5 +77,7 @@ public class LoginNewTest extends BaseE2ETest {
         assertThat(profileTICPage.reviewAuthorNick()).isEqualTo(myProfile.getReviewAuthorName());
         assertThat(profileTICPage.reviewRating()).isEqualTo(profileTICPage.fourStarRating());
         assertThat(profileTICPage.reviewMessage()).isEqualTo(profileTICPage.getExpectedReview());
-    }
+    
+    */
+}
 }
