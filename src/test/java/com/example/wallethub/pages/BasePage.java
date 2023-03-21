@@ -43,10 +43,6 @@ public class BasePage {
         return executor;
     }
 
-    public void addWait(){
-        getDriver().manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
-    }
-    
     public void type(String locator, String text){
         WebElement element = waitUntilClickable(locator);
         element.clear();

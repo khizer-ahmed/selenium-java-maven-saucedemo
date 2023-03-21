@@ -52,23 +52,17 @@ public final class ProfileTICPage extends BasePage {
     }
 
     public ProfileTICPage selectHealthInsurancePolicy()  {
-        addWait();
         click(policyDropdown);
-        addWait();
         click(healthInsurancepolicy);
-        addWait();
         return this;
     }
 
     public ProfileTICPage enterReview()  {
-        addWait();
         type(writeReviewField, writeReview );
-        addWait();
         return this;
     }
 
     public ProfileTICPage submitReview()  {
-        addWait();
         click(submitReviewButton);
         waitUntilTitle(reviewConfirmTitle);
         return this;
@@ -127,7 +121,6 @@ public final class ProfileTICPage extends BasePage {
 
     public String getReview() {
         click(shareReviewButton);
-        addWait();
         String reviewUrl = getText(reviewUrlLocator);
         return reviewUrl;
         }

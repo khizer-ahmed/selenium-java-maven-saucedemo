@@ -11,9 +11,7 @@ public class MyProfilePage extends BasePage {
     private String Myprofile = "//a[starts-with(@href,'/profile') and @class='brgm-list-it']";
     
     public MyProfilePage goTo()  {
-        addWait();
         hoverToElement(profileList);
-        addWait();
         click(Myprofile);
         return this;
     }
@@ -24,10 +22,8 @@ public class MyProfilePage extends BasePage {
     }
 
     public MyProfilePage goToReviewProfile(String url) {
-        addWait();
         String review = "//a[@href='"+url+"']";
         click(review);
-        addWait();
         return this;
     }
 
