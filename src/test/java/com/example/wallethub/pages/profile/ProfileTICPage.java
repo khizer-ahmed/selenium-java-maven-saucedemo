@@ -32,6 +32,8 @@ public final class ProfileTICPage extends BasePage {
     private String reviewAuthorNickLocator  = "//span[@itemprop='author']//following-sibling::span";
     private String reviewRatingLocator  = "//div[@class='a11y-hidden-label']";
     private String reviewMessageLocator  = "//div[@itemprop='description']";
+    private String shareReviewButton = "//div[text()='Share Review ']";
+    private String reviewUrlLocator = "//div[@class='mask-url']";
   
    
     public ProfileTICPage goTo() {
@@ -116,17 +118,17 @@ public final class ProfileTICPage extends BasePage {
         String[] reviewIds = reviewUrl.split("review=", 2);
         String reviewId = reviewIds[1];
         reviewXpath = "//article[@data-rvid='"+reviewId+"']";
-        reviewAuthorText = waitUntilChildVisible(reviewXpath, reviewAuthorLocator).getText();
-        reviewAuthorNickText = waitUntilChildVisible(reviewXpath,reviewAuthorNickLocator).getText();
-        reviewRatingText = waitUntilChildPresent(reviewXpath,reviewRatingLocator).getText();
-        reviewMessageText = waitUntilChildVisible(reviewXpath,reviewMessageLocator).getText();
+        reviewAuthorText = getText(reviewXpath+reviewAuthorLocator);
+        reviewAuthorNickText = getText(reviewXpath+reviewAuthorNickLocator);
+        reviewRatingText = getHiddenElementText(reviewXpath+reviewRatingLocator);
+        reviewMessageText = getText(reviewXpath+reviewMessageLocator);
         return this;
     }
 
     public String getReview() throws InterruptedException{
-        click("//div[text()='Share Review ']");
+        click(shareReviewButton);
         addWait();
-        String reviewUrl = getText("//div[@class='mask-url']");
+        String reviewUrl = getText(reviewUrlLocator);
         return reviewUrl;
         }
     }

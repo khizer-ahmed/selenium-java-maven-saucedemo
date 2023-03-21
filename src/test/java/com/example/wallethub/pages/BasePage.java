@@ -47,9 +47,7 @@ public class BasePage {
     }
     
     public void type(String locator, String text){
-        WebDriverWait wait  = initializeWait();
-        By elementLocator = By.xpath(locator);
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
+        WebElement element = waitUntilClickable(locator);
         element.clear();
         element.sendKeys(text);
     }
@@ -76,30 +74,11 @@ public class BasePage {
     }
 
     public String getText(String locator){
-        By elementLocator = By.xpath(locator);
-        WebDriverWait wait  = initializeWait();
-        String text;
-        try{
-            text =  wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator)).getText();
-            return text;
-        }
-        catch (TimeoutException e){
-            text =  wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator)).getText();
-            return text;
-        }
+        return waitUntilVisible(locator).getText();
     }
 
-    public WebElement waitUntilChildPresent(String parent, String child){
-        WebDriverWait wait  = initializeWait();
-        By parentLocator = By.xpath(parent);
-        By childLocator = By.xpath(child);
-        return wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parentLocator, childLocator));
-    }
-
-    public WebElement waitUntilChildVisible(String parent, String child){
-        By childLocator = By.xpath(child);
-        waitUntilVisible(parent).findElement(childLocator);
-        return waitUntilVisible(parent).findElement(childLocator);
+    public String getHiddenElementText(String locator){
+        return waitElementPresent(locator).getAttribute("innerHTML");
     }
 
     public WebElement waitUntilVisible(String locator){
@@ -115,25 +94,18 @@ public class BasePage {
     }
 
     public String getAttributeValue(String locator, String attribute){
-        By elementLocator = By.xpath(locator);
-        WebDriverWait wait  = initializeWait();
-        String text;
         try{
-            text =  wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator)).getAttribute(attribute);
-            return text;
+            return waitUntilVisible(locator).getAttribute(attribute);
+            
         }
         catch (TimeoutException e){
-            text =  wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator)).getAttribute(attribute);
-            return text;
+            return waitElementPresent(locator).getAttribute(attribute);
         }
     }
 
     public void scrollToElement(String locator){
-        By elementLocator = By.xpath(locator);
-        WebDriverWait wait  = initializeWait();
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
         executor = initializeJSExecutor();
-        executor.executeScript("arguments[0].scrollIntoView(true);", element);
+        executor.executeScript("arguments[0].scrollIntoView(true);", waitUntilVisible(locator));
     }
 
     public void hoverToElement(String locator){
@@ -149,7 +121,7 @@ public class BasePage {
                 .save(configuration().baseReportPath() + configuration().baseScreenshotPath());
     }
         
-    public String WriteRandomReview(){
+    public String WriteRandomString(){
         String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         int LENGTH = 200;
         StringBuilder sb = new StringBuilder();
@@ -161,5 +133,16 @@ public class BasePage {
         }
         return sb.toString();
     }
+
+    public static String WriteRandomReview() {
+        String[] adjectives = {"amazing", "awesome", "fantastic", "wonderful", "outstanding", "excellent", "superb", "great", "terrific", "incredible"};
+        String[] nouns = {"restaurant", "hotel", "movie", "book", "product", "service", "store", "experience", "vacation", "destination"};
     
+        Random random = new Random();
+        String adjective = adjectives[random.nextInt(adjectives.length)];
+        String noun = nouns[random.nextInt(nouns.length)];
+    
+        String message = "I recently had an " + adjective + " experience at " + noun + ". The " + noun + " was " + adjective + " in every way possible. The staff was friendly and attentive, the ambiance was perfect, and the " + noun + " itself was top-notch. I highly recommend anyone who is looking for a " + adjective + " " + noun + " to visit this place. Trust me, you won't be disappointed! I've been to many " + nouns[random.nextInt(nouns.length)] + " before, but this one really stood out. I can't wait to go back and experience it all over again. Overall, it was an " + adjective + " experience that I'll never forget.";
+        return message;
+    }
 }
