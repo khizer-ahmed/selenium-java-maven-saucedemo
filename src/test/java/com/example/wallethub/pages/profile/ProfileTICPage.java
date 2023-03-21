@@ -1,12 +1,7 @@
 package com.example.wallethub.pages.profile;
 import com.example.wallethub.pages.BasePage;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-
 import static com.example.wallethub.config.ConfigurationManager.configuration;
-
 
 public final class ProfileTICPage extends BasePage {
     
@@ -15,55 +10,28 @@ public final class ProfileTICPage extends BasePage {
     private String reviewConfirmTitle = "WalletHub - Review Confirmation";
     private String expectedConfirmReviewMessage = "Awesome!Your review has been posted.";
     private String fourStarRating = "4 Star Rating";
-    private static WebElement reviewAuthor;
-    private static WebElement reviewArticle;
-    private static WebElement reviewAuthorNick;
+    private static String reviewAuthorText;
+    private static String reviewAuthorNickText;
     private static String reviewXpath;
-    private static WebElement reviewRating;
-    private static WebElement reviewMessage;
-
+    private static String reviewRatingText;
+    private static String reviewMessageText;
     private String url = configuration().baseUrl() + "/profile/13732055i";
-
-    @FindBy(xpath = "//div[@class='rv review-action ng-enter-element']")
-    private WebElement reviewSection;
-
-    @FindBy(xpath = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='1 star rating']")
-    private WebElement ratingFirstStar;
-    
-    @FindBy(xpath = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='2 star rating']")
-    private WebElement ratingSecondStar;
-
-    @FindBy(xpath = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='3 star rating']")
-    private WebElement ratingThirdStar;
-
-    @FindBy(xpath = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='4 star rating']")
-    private WebElement ratingFourthStar;
-
-    @FindBy(xpath = "//span[text()='Select...']//parent::div")
-    private WebElement policyDropdown;
-
-    @FindBy(xpath = "//li[text()='Health Insurance']")
-    private WebElement healthInsurancepolicy;
-
-    @FindBy(xpath = "//textarea[@placeholder='Write your review...']")
-    private WebElement writeReviewField;
-
-    @FindBy(xpath = "//div[text()=' Submit ']")
-    private WebElement submitReviewButton;
-   
-    @FindBy(xpath = "//div[@class='rvc-header']//h2")
-    private WebElement reviewMessageOne;
-
-    @FindBy(xpath = "//div[@class='rvc-header']//h4")
-    private WebElement reviewMessageTwo;
-
-    @FindBy(xpath = "//div[@class='rvc-body-middle']//p")
-    private WebElement confirmPageReview;
-
-    private By reviewAuthorLocator  = By.xpath("//span[@itemprop='author']");
-    private By reviewAuthorNickLocator  = By.xpath("//span[@itemprop='author']//following-sibling::span");
-    private By reviewRatingLocator  = By.xpath("//div[@class='a11y-hidden-label']");
-    private By reviewMessageLocator  = By.xpath("//div[@itemprop='description']");
+    private String reviewSection = "//div[@class='rv review-action ng-enter-element']";
+    private String ratingFirstStar = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='1 star rating']";
+    private String ratingSecondStar = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='2 star rating']";
+    private String ratingThirdStar = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='3 star rating']";
+    private String ratingFourthStar = "//h3[text()=\"What's Your Rating?\"]//following::div[1]//child::*[@aria-label='4 star rating']";
+    private String policyDropdown = "//span[text()='Select...']//parent::div";
+    private String healthInsurancepolicy = "//li[text()='Health Insurance']";
+    private String writeReviewField = "//textarea[@placeholder='Write your review...']";
+    private String submitReviewButton = "//div[text()=' Submit ']";
+    private String reviewMessageOne = "//div[@class='rvc-header']//h2";
+    private String reviewMessageTwo = "//div[@class='rvc-header']//h4";
+    private String confirmPageReview = "//div[@class='rvc-body-middle']//p";
+    private String reviewAuthorLocator  = "//span[@itemprop='author']";
+    private String reviewAuthorNickLocator  = "//span[@itemprop='author']//following-sibling::span";
+    private String reviewRatingLocator  = "//div[@class='a11y-hidden-label']";
+    private String reviewMessageLocator  = "//div[@itemprop='description']";
   
    
     public ProfileTICPage goTo() {
@@ -72,7 +40,7 @@ public final class ProfileTICPage extends BasePage {
     }
 
     public ProfileTICPage hoverAndClickFourthStar() {
-        scrollToElement(waitUntilpresent(reviewSection));
+        scrollToElement(reviewSection);
         hoverToElement(ratingFirstStar);
         hoverToElement(ratingSecondStar);
         hoverToElement(ratingThirdStar);
@@ -92,8 +60,7 @@ public final class ProfileTICPage extends BasePage {
 
     public ProfileTICPage enterReview() throws InterruptedException {
         addWait();
-        writeReviewField.clear();
-        writeReviewField.sendKeys(writeReview);
+        type(writeReviewField, writeReview );
         addWait();
         return this;
     }
@@ -126,32 +93,41 @@ public final class ProfileTICPage extends BasePage {
     }
 
     public String reviewAuthor(){
-        return getText(reviewAuthor);
+        return reviewAuthorText;
     }
 
     public String reviewAuthorNick(){
-        return getText(reviewAuthorNick);
+        return reviewAuthorNickText;
     }
 
     public String reviewRating(){
-        return getText(reviewRating);
+        return reviewRatingText;
     }
 
     public String reviewMessage(){
-        return getText(reviewMessage);
+        return reviewMessageText;
     }
 
     public String fourStarRating(){
         return fourStarRating;
     }
     
-    public ProfileTICPage findReview(String reviewId){
+    public ProfileTICPage findReview(String reviewUrl){
+        String[] reviewIds = reviewUrl.split("review=", 2);
+        String reviewId = reviewIds[1];
         reviewXpath = "//article[@data-rvid='"+reviewId+"']";
-        reviewArticle= elementVisible(reviewXpath);
-        reviewAuthor = waitElementVisible(reviewArticle.findElement(reviewAuthorLocator));
-        reviewAuthorNick = waitElementVisible(reviewArticle.findElement(reviewAuthorNickLocator));
-        reviewRating = waitElementVisible(reviewArticle.findElement(reviewRatingLocator));
-        reviewMessage = waitElementVisible(reviewArticle.findElement(reviewMessageLocator));
+        reviewAuthorText = waitUntilChildVisible(reviewXpath, reviewAuthorLocator).getText();
+        reviewAuthorNickText = waitUntilChildVisible(reviewXpath,reviewAuthorNickLocator).getText();
+        reviewRatingText = waitUntilChildPresent(reviewXpath,reviewRatingLocator).getText();
+        reviewMessageText = waitUntilChildVisible(reviewXpath,reviewMessageLocator).getText();
         return this;
     }
-}
+
+    public String getReview() throws InterruptedException{
+        click("//div[text()='Share Review ']");
+        addWait();
+        String reviewUrl = getText("//div[@class='mask-url']");
+        return reviewUrl;
+        }
+    }
+

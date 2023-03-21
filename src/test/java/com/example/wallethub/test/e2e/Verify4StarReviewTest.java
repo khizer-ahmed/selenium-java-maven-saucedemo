@@ -1,6 +1,6 @@
 package com.example.wallethub.test.e2e;
 
-import com.example.wallethub.pages.login.LoginNewPage;
+import com.example.wallethub.pages.login.LoginPage;
 import com.example.wallethub.pages.profile.MyProfilePage;
 import com.example.wallethub.pages.profile.ProfileTICPage;
 import com.example.wallethub.test.BaseE2ETest;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class Verify4StarReviewTest extends BaseE2ETest {
     private static final String FILE_PATH = "testCaseData.csv";
-    private LoginNewPage loginPage;
+    private LoginPage loginPage;
     private ProfileTICPage profileTICPage;
     private MyProfilePage myProfile;
     
@@ -32,7 +32,7 @@ public class Verify4StarReviewTest extends BaseE2ETest {
 
     @Override
     public void initialize() {
-        loginPage = createInstance(LoginNewPage.class);
+        loginPage = createInstance(LoginPage.class);
         profileTICPage = createInstance(ProfileTICPage.class);
         myProfile = createInstance(MyProfilePage.class);
     }
@@ -47,14 +47,14 @@ public class Verify4StarReviewTest extends BaseE2ETest {
     }
 
     @Test   (testName = "TC-1",dataProvider = "BaseData")
-    public void testCorrectUserNameAndCorrectPassword(final BaseData baseData) throws InterruptedException{
+    public void test4StarReview(final BaseData baseData) throws InterruptedException{
         loginPage
                 .goTo()
                 .enterUsername(configuration().email())
                 .enterPassword(configuration().password())
                 .clickLogin();
-        assertThat(loginPage.getNaame()).isEqualTo(configuration().name()); 
-        /*   
+        assertThat(loginPage.getName()).isEqualTo(configuration().name()); 
+        
         profileTICPage
                    .goTo() 
                    .hoverAndClickFourthStar()
@@ -65,19 +65,46 @@ public class Verify4StarReviewTest extends BaseE2ETest {
         assertThat(profileTICPage.getConfirmReviewMessage()).isEqualTo(profileTICPage.getExpectedConfirmReviewMessage());   
         assertThat(profileTICPage.getConfirmPageReview()).isEqualTo(profileTICPage.getExpectedReview());  
 
+        String reviewUrl = profileTICPage.getReview();
         myProfile.goTo();
 
-        assertThat(profileTICPage.getProfileName()).isEqualTo(myProfile.getReviewFeedCompany());
+        assertThat(profileTICPage.getProfileName()).isEqualTo(myProfile.getReviewFeedCompany(reviewUrl));
         
-        String reviewId = myProfile.getReviewId();
-        myProfile.goToReviewProfile(); 
-        profileTICPage.findReview(reviewId);
+        myProfile.goToReviewProfile(reviewUrl); 
+        profileTICPage.findReview(reviewUrl);
         
         assertThat(profileTICPage.reviewAuthor()).isEqualTo(myProfile.getReviewAuthorName());
         assertThat(profileTICPage.reviewAuthorNick()).isEqualTo(myProfile.getReviewAuthorName());
         assertThat(profileTICPage.reviewRating()).isEqualTo(profileTICPage.fourStarRating());
-        assertThat(profileTICPage.reviewMessage()).isEqualTo(profileTICPage.getExpectedReview());
-    
-    */
+        assertThat(profileTICPage.reviewMessage()).isEqualTo(profileTICPage.getExpectedReview());    
 }
+
+/*
+
+@Test   (testName = "TC-1",dataProvider = "BaseData")
+    public void testCorrectUserNameAndCorrectPassword(final BaseData baseData) throws InterruptedException{
+        loginPage
+                .goTo()
+                .enterUsername(configuration().email())
+                .enterPassword(configuration().password())
+                .clickLogin();
+        assertThat(loginPage.getName()).isEqualTo(configuration().name()); 
+        
+        myProfile.goTo();
+
+        assertThat(profileTICPage.getProfileName()).isEqualTo(myProfile.getReviewFeedCompany());
+        
+        //String reviewId = myProfile.getReviewId();;
+        String reviewId = "2141173398";
+
+        
+        myProfile.goToReviewProfile(); 
+        profileTICPage.findReview(reviewId);
+        
+        assertThat(profileTICPage.reviewAuthor()).isEqualTo(myProfile.getReviewAuthorName());
+        assertThat(profileTICPage.reviewAuthorNick()).isEqualTo(myProfile.getReviewNickName());
+        assertThat(profileTICPage.reviewRating()).isEqualTo(profileTICPage.fourStarRating());
+        //assertThat(profileTICPage.reviewMessage()).isEqualTo(profileTICPage.getExpectedReview());    
+}
+*/
 }

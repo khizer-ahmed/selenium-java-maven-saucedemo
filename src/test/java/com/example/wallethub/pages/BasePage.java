@@ -5,6 +5,7 @@ import com.assertthat.selenium_shutterbug.core.Shutterbug;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -32,7 +33,7 @@ public class BasePage {
     }
 
     public WebDriverWait initializeWait(){
-        WebDriverWait wait = new WebDriverWait(driver, 15);
+        WebDriverWait wait = new WebDriverWait(driver, configuration().timeout());
         return wait;
     }
 
@@ -45,16 +46,23 @@ public class BasePage {
         Thread.sleep(2000);
     }
     
+    public void type(String locator, String text){
+        WebDriverWait wait  = initializeWait();
+        By elementLocator = By.xpath(locator);
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
+        element.clear();
+        element.sendKeys(text);
+    }
 
-    public WebElement waitUntilpresent(WebElement element) {
+    public WebElement waitUntilClickable(String locator) {
+        By elementLocator = By.xpath(locator);
         try {
             WebDriverWait wait  = initializeWait();
-            element = wait.until(ExpectedConditions.elementToBeClickable(element));
-            return element;
+            return wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
+            
         } catch (StaleElementReferenceException e) {
             WebDriverWait wait  = initializeWait();
-            element = wait.until(ExpectedConditions.elementToBeClickable(element));
-            return element;
+            return wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
         }
     }
 
@@ -63,44 +71,74 @@ public class BasePage {
         wait.until(ExpectedConditions.titleIs(title));
     }
 
-    public void click(WebElement element){
-        waitUntilpresent(element).click();
+    public void click(String locator){
+        waitUntilClickable(locator).click();
     }
 
-    public String getText(WebElement element){
+    public String getText(String locator){
+        By elementLocator = By.xpath(locator);
         WebDriverWait wait  = initializeWait();
-        return wait.until(ExpectedConditions.visibilityOf(element)).getText();
+        String text;
+        try{
+            text =  wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator)).getText();
+            return text;
+        }
+        catch (TimeoutException e){
+            text =  wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator)).getText();
+            return text;
+        }
     }
 
-    public WebElement elementVisible(String locator){
+    public WebElement waitUntilChildPresent(String parent, String child){
+        WebDriverWait wait  = initializeWait();
+        By parentLocator = By.xpath(parent);
+        By childLocator = By.xpath(child);
+        return wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parentLocator, childLocator));
+    }
+
+    public WebElement waitUntilChildVisible(String parent, String child){
+        By childLocator = By.xpath(child);
+        waitUntilVisible(parent).findElement(childLocator);
+        return waitUntilVisible(parent).findElement(childLocator);
+    }
+
+    public WebElement waitUntilVisible(String locator){
         WebDriverWait wait  = initializeWait();
         By elementLocator = By.xpath(locator);
         return wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
     }
 
-    public WebElement waitElementVisible(WebElement element){
+    public WebElement waitElementPresent(String locator){
         WebDriverWait wait  = initializeWait();
-        return wait.until(ExpectedConditions.visibilityOf(element));
+        By elementLocator = By.xpath(locator);
+        return wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
     }
 
-    public String getAttributeValue(WebElement element, String attribute){
+    public String getAttributeValue(String locator, String attribute){
+        By elementLocator = By.xpath(locator);
         WebDriverWait wait  = initializeWait();
-        return wait.until(ExpectedConditions.visibilityOf(element)).getAttribute(attribute);
+        String text;
+        try{
+            text =  wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator)).getAttribute(attribute);
+            return text;
+        }
+        catch (TimeoutException e){
+            text =  wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator)).getAttribute(attribute);
+            return text;
+        }
     }
 
-    public void scrollToElement(WebElement element){
+    public void scrollToElement(String locator){
+        By elementLocator = By.xpath(locator);
+        WebDriverWait wait  = initializeWait();
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
         executor = initializeJSExecutor();
         executor.executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
-    public void jsClick(WebElement element){
-        executor = initializeJSExecutor();
-        executor.executeScript("arguments[0].click();", element);
-    }
-
-    public void hoverToElement(WebElement element){
+    public void hoverToElement(String locator){
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(waitUntilpresent(element));
+        actions.moveToElement(waitUntilClickable(locator));
         actions.pause(1000); 
         actions.build().perform();
     }
@@ -113,7 +151,7 @@ public class BasePage {
         
     public String WriteRandomReview(){
         String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        int LENGTH = 195;
+        int LENGTH = 200;
         StringBuilder sb = new StringBuilder();
         Random random = new SecureRandom();
         for (int i = 0; i < LENGTH; i++) {

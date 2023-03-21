@@ -1,7 +1,6 @@
 package com.example.wallethub.pages.profile;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import static com.example.wallethub.config.ConfigurationManager.configuration;
 
 import com.example.wallethub.pages.BasePage;
 
@@ -9,14 +8,9 @@ public class MyProfilePage extends BasePage {
     
     private String reviewAuthorName = "Your Review";
 
-    @FindBy(xpath = "//span[text()='Syed Khizer']//parent::div")
-    private WebElement profileList;
-
-    @FindBy(xpath = "//a[starts-with(@href,'/profile') and @class='brgm-list-it']")
-    private WebElement Myprofile;
-
-    @FindBy(xpath = "//div[@class='pr-rec-texts-container']//a")
-    private WebElement reviewfeedCompany;
+    private String profileList = "//span[text()='"+configuration().name()+"']//parent::div";
+    private String Myprofile = "//a[starts-with(@href,'/profile') and @class='brgm-list-it']";
+    private String reviewfeedCompany = "(//div[@class='pr-rec-texts-container']//a)[2]";
     
     public MyProfilePage goTo() throws InterruptedException {
         addWait();
@@ -26,13 +20,15 @@ public class MyProfilePage extends BasePage {
         return this;
     }
 
-    public String getReviewFeedCompany() {
-        return getText(reviewfeedCompany);
+    public String getReviewFeedCompany(String url) {
+        String review = "//a[@href='"+url+"']";
+        return getText(review);
     }
 
-    public MyProfilePage goToReviewProfile() throws InterruptedException{
+    public MyProfilePage goToReviewProfile(String url) throws InterruptedException{
         addWait();
-        click(reviewfeedCompany);
+        String review = "//a[@href='"+url+"']";
+        click(review);
         addWait();
         return this;
     }
@@ -51,6 +47,6 @@ public class MyProfilePage extends BasePage {
     }
 
     public String getReviewNickName() {
-        return "@khizerahmed5116SSS";
+        return "@"+configuration().username();
     }
 }
