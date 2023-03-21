@@ -51,7 +51,7 @@ public final class ProfileTICPage extends BasePage {
         return this;
     }
 
-    public ProfileTICPage selectHealthInsurancePolicy() throws InterruptedException {
+    public ProfileTICPage selectHealthInsurancePolicy()  {
         addWait();
         click(policyDropdown);
         addWait();
@@ -60,14 +60,14 @@ public final class ProfileTICPage extends BasePage {
         return this;
     }
 
-    public ProfileTICPage enterReview() throws InterruptedException {
+    public ProfileTICPage enterReview()  {
         addWait();
         type(writeReviewField, writeReview );
         addWait();
         return this;
     }
 
-    public ProfileTICPage submitReview() throws InterruptedException {
+    public ProfileTICPage submitReview()  {
         addWait();
         click(submitReviewButton);
         waitUntilTitle(reviewConfirmTitle);
@@ -125,7 +125,7 @@ public final class ProfileTICPage extends BasePage {
         return this;
     }
 
-    public String getReview() throws InterruptedException{
+    public String getReview() {
         click(shareReviewButton);
         addWait();
         String reviewUrl = getText(reviewUrlLocator);

@@ -17,6 +17,7 @@ import static com.example.wallethub.config.ConfigurationManager.configuration;
 
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class BasePage {
     private WebDriver driver;
@@ -42,8 +43,8 @@ public class BasePage {
         return executor;
     }
 
-    public void addWait() throws InterruptedException {
-        Thread.sleep(2000);
+    public void addWait(){
+        getDriver().manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
     }
     
     public void type(String locator, String text){

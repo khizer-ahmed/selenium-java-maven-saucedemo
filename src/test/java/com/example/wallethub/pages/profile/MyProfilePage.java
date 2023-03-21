@@ -10,7 +10,7 @@ public class MyProfilePage extends BasePage {
     private String profileList = "//span[text()='"+configuration().name()+"']//parent::div";
     private String Myprofile = "//a[starts-with(@href,'/profile') and @class='brgm-list-it']";
     
-    public MyProfilePage goTo() throws InterruptedException {
+    public MyProfilePage goTo()  {
         addWait();
         hoverToElement(profileList);
         addWait();
@@ -23,7 +23,7 @@ public class MyProfilePage extends BasePage {
         return getText(review);
     }
 
-    public MyProfilePage goToReviewProfile(String url) throws InterruptedException{
+    public MyProfilePage goToReviewProfile(String url) {
         addWait();
         String review = "//a[@href='"+url+"']";
         click(review);

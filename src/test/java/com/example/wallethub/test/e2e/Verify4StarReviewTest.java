@@ -47,7 +47,7 @@ public class Verify4StarReviewTest extends BaseE2ETest {
     }
 
     @Test   (testName = "TC-1",dataProvider = "BaseData")
-    public void test4StarReview(final BaseData baseData) throws InterruptedException{
+    public void test4StarReview(final BaseData baseData) {
         loginPage
                 .goTo()
                 .enterUsername(configuration().email())
