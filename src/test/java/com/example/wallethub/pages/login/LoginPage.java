@@ -1,50 +1,37 @@
 package com.example.wallethub.pages.login;
 
 import com.example.wallethub.pages.BasePage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
 public final class LoginPage extends BasePage {
-    @FindBy(id = "user-name")
-    private WebElement txtUsername;
-
-    @FindBy(id = "password")
-    private WebElement txtPassword;
-
-    @FindBy(id = "login-button")
-    private WebElement btnLogin;
+    private String url = configuration().baseUrl() + "/join/login";
+    private String profileName = configuration().name();
+    private String profileNameXpath = "//span[text()='"+profileName+"']";
+    private String txtUsername = "//input[@id='email']";
+    private String txtPassword = "//input[@id='password']";
+    private String btnLogin = "//button//*[text()='Login']/ancestor::button";
 
     public LoginPage goTo() {
-        getDriver().get(configuration().baseUrl());
-
+        getDriver().get(url);
         return this;
     }
 
     public LoginPage enterUsername(final String username) {
-        txtUsername.clear();
-        txtUsername.sendKeys(username);
-
+        type(txtUsername, username);
         return this;
     }
 
     public LoginPage enterPassword(final String password) {
-        txtPassword.clear();
-        txtPassword.sendKeys(password);
-
+        type(txtPassword, password);
         return this;
     }
 
-    public String getErrorMessage() {
-        return getDriver()
-                .findElement(By.className("error-message-container"))
-                .findElement(By.tagName("h3"))
-                .getText();
+    public String getName() {
+        return getText(profileNameXpath);  
     }
 
     public void clickLogin() {
-        btnLogin.click();
+        click(btnLogin);
     }
 }

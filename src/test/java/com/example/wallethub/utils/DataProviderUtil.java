@@ -14,9 +14,6 @@ import java.util.ArrayList;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
-/**
- * @author tahanima
- */
 public final class DataProviderUtil {
     private DataProviderUtil() {}
 

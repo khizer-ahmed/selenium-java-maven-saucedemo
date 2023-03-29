@@ -10,14 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.example.wallethub.config.ConfigurationManager.configuration;
 
-/**
- * This enum handles the initialization of browser drivers.
- *
- * <p>This project makes use of the drivers - chrome, firefox and safari currently. So, this enum
- * contains the initialization logic of these browser drivers.
- *
- * @author tahanima
- */
 public enum BrowserFactory {
     /** Contains all the initialization logic for the chrome driver. */
     CHROME {

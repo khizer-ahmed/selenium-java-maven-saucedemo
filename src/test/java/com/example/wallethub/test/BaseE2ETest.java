@@ -1,4 +1,4 @@
-package com.example.wallethub.e2e;
+package com.example.wallethub.test;
 
 import com.example.wallethub.driver.DriverManager;
 import com.example.wallethub.pages.BasePage;
@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
-
 
 @Listeners(TestListener.class)
 public abstract class BaseE2ETest {

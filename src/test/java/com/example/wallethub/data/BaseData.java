@@ -4,11 +4,6 @@ import com.univocity.parsers.annotations.Parsed;
 import lombok.Getter;
 import lombok.ToString;
 
-/**
- * This class provides common properties for all the test data.
- *
- * @author tahanima
- */
 @Getter
 @ToString
 public class BaseData {
